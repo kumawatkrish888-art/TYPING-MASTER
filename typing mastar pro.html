@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypingMaster Pro - Learn & Play</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary-color: #00d2ff;
+            --secondary-color: #3a7bd5;
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --text-light: #e94560;
+            --text-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 20%, rgba(0, 210, 255, 0.14), transparent 18%),
+                        radial-gradient(circle at 80% 10%, rgba(58, 123, 213, 0.12), transparent 20%),
+                        radial-gradient(circle at 50% 95%, rgba(233, 69, 96, 0.09), transparent 25%),
+                        linear-gradient(180deg, #121629 0%, #111224 35%, #0d1221 100%);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 210, 255, 0.16), transparent 22%),
+                        radial-gradient(circle at 70% 20%, rgba(58, 123, 213, 0.12), transparent 18%),
+                        radial-gradient(circle at 50% 80%, rgba(233, 69, 96, 0.10), transparent 20%);
+            opacity: 0.85;
+            mix-blend-mode: screen;
+            animation: drift 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift {
+            from { transform: translate3d(0,0,0) scale(1); }
+            to { transform: translate3d(40px,-30px,0) scale(1.02); }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(22, 33, 62, 0.95);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: var(--text-white);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at top center, rgba(0, 210, 255, 0.18), transparent 38%),
+                        linear-gradient(160deg, rgba(18, 29, 62, 0.95), rgba(9, 15, 37, 0.94));
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: -20%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 210, 255, 0.14), transparent 24%),
+                        radial-gradient(circle at 75% 10%, rgba(58, 123, 213, 0.12), transparent 20%);
+            filter: blur(28px);
+            opacity: 0.8;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            top: 10%;
+            right: -80px;
+            box-shadow: 0 0 80px rgba(0, 210, 255, 0.25);
+            transform: rotate(25deg);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: var(--text-light);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--text-light);
+        }
+
+        /* Game Section */
+        .game-section {
+            padding: 50px 5%;
+            background: var(--bg-dark);
+            text-align: center;
+        }
+
+        .game-container {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stats-box {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stat-item span {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        #target-text {
+            font-size: 1.4rem;
+            color: #fff;
+            margin: 20px 0;
+            padding: 20px;
+            background: #0f3460;
+            border-radius: 10px;
+            min-height: 120px;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            letter-spacing: 1px;
+            user-select: none;
+        }
+
+        #user-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            background: #fff;
+            color: #333;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .result-message {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 215, 255, 0.12);
+            border: 1px solid rgba(0, 215, 255, 0.3);
+            border-radius: 8px;
+            color: #b8f1ff;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .popup-content {
+            width: min(950px, 100%);
+            background: #0f244f;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 30px;
+            color: #fff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        }
+
+        .popup-content h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .popup-paragraph {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+
+        .score-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .score-card {
+            flex: 1 1 260px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 20px;
+            border-radius: 14px;
+        }
+
+        .score-card p {
+            margin: 0 0 12px;
+            color: #91d5ff;
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 14px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .bar-fill.accuracy { background: #24f4f3; }
+        .bar-fill.speed { background: #7b63ff; }
+        .bar-fill.marks { background: #ffbf00; }
+
+        .popup-close {
+            margin-top: 20px;
+            display: inline-flex;
+            padding: 12px 26px;
+            background: var(--text-light);
+            border: none;
+            border-radius: 999px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 50px 5%;
+            background: var(--bg-card);
+            text-align: center;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-dark);
+            padding: 20px;
+            border-radius: 10px;
+            width: 250px;
+            border: 1px solid var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: #0f3460;
+            padding: 20px;
+            text-align: center;
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .stats-box { flex-direction: column; gap: 10px; }
+            .nav-links { display: none; } /* Mobile menu simplified */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">TypingMaster Pro</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#game">Game</a>
+            <a href="#about">About</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1>Master Your Typing Speed</h1>
+        <p>Improve your accuracy and speed with our interactive paragraph typing practice.</p>
+        <a href="#game" class="btn">Start Playing Now</a>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game" class="game-section">
+        <h2>Typing Speed Test</h2>
+        <p>Type the paragraph below as accurately as you can, then देखें परिणाम।</p>
+        <br>
+        
+        <div class="game-container">
+            <div class="stats-box">
+                <div class="stat-item">Time: <span id="time">60</span>s</div>
+                <div class="stat-item">WPM: <span id="wpm">0</span></div>
+                <div class="stat-item">Accuracy: <span id="accuracy">100</span>%</div>
+                <div class="stat-item">Progress: <span id="progress">0</span>%</div>
+                <div class="stat-item">Typed: <span id="typed">0</span></div>
+            </div>
+
+            <div id="target-text">Click Start to Begin...</div>
+            
+            <input type="text" id="user-input" placeholder="इस पैरा को टाइप करें..." disabled onpaste="return false" oncopy="return false" oncut="return false" oncontextmenu="return false">
+            
+            <button class="btn" id="start-btn" onclick="startGame()">Start Test</button>
+            <div id="result-message" class="result-message"></div>
+        </div>
+    </section>
+
+    <div id="result-popup" class="popup-overlay">
+        <div class="popup-content">
+            <h3>Result Summary</h3>
+            <div class="popup-paragraph" id="result-paragraph"></div>
+            <div class="score-row">
+                <div class="score-card">
+                    <p>Accuracy</p>
+                    <div class="score-bar"><div id="accuracy-bar" class="bar-fill accuracy" style="width:0%"></div></div>
+                    <p id="accuracy-value">0%</p>
+                </div>
+                <div class="score-card">
+                    <p>Speed</p>
+                    <div class="score-bar"><div id="speed-bar" class="bar-fill speed" style="width:0%"></div></div>
+                    <p id="speed-value">0 WPM</p>
+                </div>
+                <div class="score-card">
+                    <p>Marks</p>
+                    <div class="score-bar"><div id="marks-bar" class="bar-fill marks" style="width:0%"></div></div>
+                    <p id="marks-value">0 / 100</p>
+                </div>
+            </div>
+            <button class="popup-close" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <h2>Why Use TypingMaster?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <h3>🚀 Fast Speed</h3>
+                <p>Track your WPM (Words Per Minute) accurately.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎯 High Accuracy</h3>
+                <p>Improve your precision with real-time feedback.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎮 Fun Game</h3>
+                <p>Learn while playing with paragraph typing practice.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 TypingMaster Pro. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const targetText = document.getElementById('target-text');
+        const userInput = document.getElementById('user-input');
+        const timeDisplay = document.getElementById('time');
+        const wpmDisplay = document.getElementById('wpm');
+        const accDisplay = document.getElementById('accuracy');
+        const typedDisplay = document.getElementById('typed');
+        const progressDisplay = document.getElementById('progress');
+        const resultMessage = document.getElementById('result-message');
+        const resultPopup = document.getElementById('result-popup');
+        const resultParagraph = document.getElementById('result-paragraph');
+        const accuracyBar = document.getElementById('accuracy-bar');
+        const speedBar = document.getElementById('speed-bar');
+        const marksBar = document.getElementById('marks-bar');
+        const accuracyValue = document.getElementById('accuracy-value');
+        const speedValue = document.getElementById('speed-value');
+        const marksValue = document.getElementById('marks-value');
+        const startBtn = document.getElementById('start-btn');
+
+        let timeLeft = 60;
+        let timer = null;
+        let isPlaying = false;
+        let totalChars = 0;
+        let correctChars = 0;
+        let currentText = '';
+
+        const practiceParagraphs = [
+            'A Rolls-Royce is more than just a car; it is a moving masterpiece that embodies elegance, precision, and timeless prestige. Handcrafted with meticulous attention to detail, every model reflects the brand’s century-old legacy of excellence. From the iconic Spirit of Ecstasy ornament to the whisper-quiet yet powerful engine, a Rolls-Royce offers an unmatched driving experience that blends supreme comfort with effortless performance. Its bespoke design options allow each owner to create a truly unique expression of personal style, making every Rolls-Royce not just a vehicle, but a statement of sophistication and success.'
+        ];
+
+        function startGame() {
+            timeLeft = 60;
+            isPlaying = true;
+            totalChars = 0;
+            correctChars = 0;
+            
+            timeDisplay.innerText = timeLeft;
+            wpmDisplay.innerText = 0;
+            accDisplay.innerText = 100;
+            progressDisplay.innerText = 0;
+            typedDisplay.innerText = 0;
+            resultMessage.innerText = '';
+            userInput.value = '';
+            userInput.disabled = false;
+            userInput.focus();
+            startBtn.style.display = 'none';
+
+            currentText = practiceParagraphs[Math.floor(Math.random() * practiceParagraphs.length)];
+            targetText.innerText = currentText;
+
+            clearInterval(timer);
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        userInput.addEventListener('input', handleTyping);
+        userInput.addEventListener('paste', function(event) { event.preventDefault(); });
+        userInput.addEventListener('copy', function(event) { event.preventDefault(); });
+        userInput.addEventListener('cut', function(event) { event.preventDefault(); });
+        userInput.addEventListener('contextmenu', function(event) { event.preventDefault(); });
+        targetText.addEventListener('copy', function(event) { event.preventDefault(); });
+        targetText.addEventListener('cut', function(event) { event.preventDefault(); });
+        document.addEventListener('keydown', function(event) {
+            const isPaste = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'v';
+            const isCopy = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'c';
+            const isCut = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'x';
+            if (isPaste || isCopy || isCut) {
+                event.preventDefault();
+            }
+        });
+
+        function handleTyping() {
+            const inputValue = userInput.value;
+            totalChars = inputValue.length;
+            typedDisplay.innerText = totalChars;
+            correctChars = 0;
+
+            const minLength = Math.min(inputValue.length, currentText.length);
+            for (let i = 0; i < minLength; i++) {
+                if (inputValue[i] === currentText[i]) {
+                    correctChars++;
+                }
+            }
+
+            const accuracy = totalChars === 0 ? 100 : Math.round((correctChars / totalChars) * 100);
+            const progress = currentText.length === 0 ? 0 : Math.min(100, Math.round((totalChars / currentText.length) * 100));
+            accDisplay.innerText = accuracy;
+            progressDisplay.innerText = progress;
+            calculateSpeed();
+
+            if (inputValue === currentText) {
+                endGame();
+            }
+        }
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timeDisplay.innerText = timeLeft;
+                calculateSpeed();
+            } else {
+                endGame();
+            }
+        }
+
+        function calculateSpeed() {
+            const timeElapsed = 60 - timeLeft;
+            const minutes = timeElapsed > 0 ? timeElapsed / 60 : 1;
+            const wordsTyped = correctChars / 5;
+            const wpm = timeElapsed === 0 ? 0 : Math.round(wordsTyped / minutes);
+            wpmDisplay.innerText = wpm;
+        }
+
+        function endGame() {
+            clearInterval(timer);
+            isPlaying = false;
+            userInput.disabled = true;
+            startBtn.style.display = 'inline-block';
+            startBtn.innerText = 'Restart Test';
+
+            const inputValue = userInput.value;
+            const incorrectChars = totalChars - correctChars;
+            const accuracy = totalChars === 0 ? 0 : Math.round((correctChars / totalChars) * 100);
+            const wpm = Number(wpmDisplay.innerText);
+            const marks = Math.min(100, Math.round(accuracy * 0.7 + Math.min(wpm, 100) * 0.3));
+
+            if (inputValue === currentText) {
+                resultMessage.innerText = 'बधाई! आपने पैराग्राफ सही टाइप किया।';
+            } else {
+                resultMessage.innerText = `टाइपिंग पूरी हो गयी। गलतियां: ${incorrectChars}। सटीकता: ${accuracy}%.`;
+            }
+
+            resultParagraph.innerText = currentText;
+            accuracyBar.style.width = `${accuracy}%`;
+            speedBar.style.width = `${Math.min(100, wpm)}%`;
+            marksBar.style.width = `${marks}%`;
+            accuracyValue.innerText = `${accuracy}%`;
+            speedValue.innerText = `${wpm} WPM`;
+            marksValue.innerText = `${marks} / 100`;
+            resultPopup.style.display = 'flex';
+        }
+
+        function closePopup() {
+            resultPopup.style.display = 'none';
+        }
+    </script>
